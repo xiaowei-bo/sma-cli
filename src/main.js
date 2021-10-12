@@ -1,8 +1,8 @@
 import program from "commander";
-import { VERSION } from "./utils/constants";
-import apply from "./index";
+import config from "./utils/config";
 import chalk from "chalk";
-import commandMap from "./commandMap";
+import commandMap from "./utils/commandMap";
+import * as actions from "./actions";
 
 for(const command in commandMap) {
     const { description, alias } = commandMap[command];
@@ -10,24 +10,13 @@ for(const command in commandMap) {
     instance.description(description);
     instance.alias(alias);
     instance.action(() => {
-        apply(command, ...process.argv.slice(3))
+        actions[command](command, ...process.argv.slice(3));
     });
 }
 
-function help() {
-    console.log('\r\nUsage:');
-    for(const command in commandMap) {
-        commandMap[command].usages.forEach(usage => {
-            console.log('  - ' + usage);
-        });
-    }
-    console.log('\r');
-}
 program.usage('<command> [options]');
-program.on('-h', help);
-program.on('--help', help);
-program.version(VERSION, '-V --version').parse(process.argv);
-
+program.version(config.version, "-V, --version");
+program.parse(process.argv);
 if (!process.argv.slice(2).length) {
-    program.outputHelp(chalk.green);
+    console.log(chalk.green(program.helpInformation()));
 }

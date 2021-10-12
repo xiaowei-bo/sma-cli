@@ -2,13 +2,17 @@
 
 var _commander = _interopRequireDefault(require("commander"));
 
-var _constants = require("./utils/constants");
-
-var _index = _interopRequireDefault(require("./index"));
+var _config = _interopRequireDefault(require("./utils/config"));
 
 var _chalk = _interopRequireDefault(require("chalk"));
 
-var _commandMap = _interopRequireDefault(require("./commandMap"));
+var _commandMap = _interopRequireDefault(require("./utils/commandMap"));
+
+var actions = _interopRequireWildcard(require("./actions"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23,30 +27,16 @@ for (const command in _commandMap.default) {
   instance.description(description);
   instance.alias(alias);
   instance.action(() => {
-    (0, _index.default)(command, ...process.argv.slice(3));
+    actions[command](command, ...process.argv.slice(3));
   });
-}
-
-function help() {
-  console.log('\r\nUsage:');
-
-  for (const command in _commandMap.default) {
-    _commandMap.default[command].usages.forEach(usage => {
-      console.log('  - ' + usage);
-    });
-  }
-
-  console.log('\r');
 }
 
 _commander.default.usage('<command> [options]');
 
-_commander.default.on('-h', help);
+_commander.default.version(_config.default.version, "-V, --version");
 
-_commander.default.on('--help', help);
-
-_commander.default.version(_constants.VERSION, '-V --version').parse(process.argv);
+_commander.default.parse(process.argv);
 
 if (!process.argv.slice(2).length) {
-  _commander.default.outputHelp(_chalk.default.green);
+  console.log(_chalk.default.green(_commander.default.helpInformation()));
 }
