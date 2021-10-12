@@ -2,16 +2,18 @@
   "name": "sma-cli",
   "version": "1.0.0",
   "description": "A cli for simple_multi_activity",
+  "homepage": "https://github.com/xiaowei-bo/simple_multi_activity",
+  "repository": "https://github.com/xiaowei-bo/simple_multi_activity",
   "main": "index.js",
   "keywords": [
-    "koa",
-    "node",
-    "es6",
-    "webpack",
-    "vue",
-    "react",
     "activity",
-    "multi-page"
+    "simple",
+    "simple-multi-page",
+    "simple-multi-activity",
+    "multi-page",
+    "sma",
+    "sma-cli",
+    "cli"
   ],
   "bin": {
     "sma": "./bin/www"
