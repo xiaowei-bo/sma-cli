@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var _default = {
-  version: "1.0.0",
+  version: "1.0.1",
   repository: "https://github.com:xiaowei-bo/simple_multi_activity#master"
 };
 exports.default = _default;
